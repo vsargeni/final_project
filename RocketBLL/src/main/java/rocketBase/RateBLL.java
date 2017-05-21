@@ -11,7 +11,7 @@ public class RateBLL {
 
 	private static RateDAL _RateDAL = new RateDAL();
 	
-	static double getRate(int GivenCreditScore) throws RateException 
+	public static double getRate(int GivenCreditScore) throws RateException 
 	{
 		double dInterestRate = 0;
 		
@@ -35,6 +35,16 @@ public class RateBLL {
 		//
 		//	Example... how to use Lambda functions:
 		//			https://github.com/CISC181/Lambda
+		for (RateDomainModel rt :rates){
+			if (rt.getiMinCreditScore() <=GivenCreditScore) {
+				dInterestRate = rt.getdInterestRate();
+			}
+			if (dInterestRate==0){
+				RateDomainModel rateModel = new RateDomainModel();
+				rateModel.setiMinCreditScore(GivenCreditScore);
+				throw new RateException(rateModel);
+			}
+		}
 		
 		return dInterestRate;
 		
